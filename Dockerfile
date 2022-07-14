@@ -8,7 +8,7 @@ RUN go mod download
 COPY . .
 
 ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
-RUN cd app && go build -ldflags="-s -w" -o app .
+RUN go build -ldflags="-s -w" -o app .
 
 FROM alpine:3.14
 
