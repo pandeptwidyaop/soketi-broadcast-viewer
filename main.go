@@ -14,7 +14,7 @@ func main() {
 		return c.SendString("OK")
 	})
 
-	app.Get("/webhook", func(c *fiber.Ctx) error {
+	app.Post("/webhook", func(c *fiber.Ctx) error {
 		fmt.Println(string(c.Body()))
 		return c.SendString("OK")
 	})
