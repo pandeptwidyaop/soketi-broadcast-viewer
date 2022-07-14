@@ -7,6 +7,18 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+type WebhookEvent struct {
+	Name    string `json:"name"`
+	Channel string `json:"channel"`
+	Event   string `json:"event"`
+	Data    string `json:"data"`
+}
+
+type PusherWebhook struct {
+	Time   int            `json:"time_ms"`
+	Events []WebhookEvent `json:"events"`
+}
+
 func main() {
 	app := fiber.New()
 
@@ -15,7 +27,7 @@ func main() {
 	})
 
 	app.Post("/webhook", func(c *fiber.Ctx) error {
-		var body map[string]string
+		body := new(PusherWebhook)
 
 		if err := c.BodyParser(body); err != nil {
 			return c.Status(400).SendString(err.Error())
