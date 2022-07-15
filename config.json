@@ -1,0 +1,19 @@
+{
+    "debug": true,
+    "port": 6001,
+    "appManager.array.apps": [
+        {
+            "id": "app",
+            "key": "app",
+            "secret": "app",
+            "enableClientMessages": true,
+            "webhooks": [
+                {
+                    "url": "http://webhook:8000/webhook",
+                    "event_types": ["channel_occupied","client_event","channel_vacated","member_added","member_removed"]
+                }
+            ]
+        }
+    ],
+    "database.redis.host": "redis"
+}

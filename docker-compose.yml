@@ -1,0 +1,13 @@
+version: "3"
+services:
+  redis:
+    image: redis
+  soketi: 
+    image: quay.io/soketi/soketi:1.0-16-debian
+    volumes:
+      - ./config.json:/etc/soketi-config.json
+    command: ["node", "/app/bin/server.js", "start","--config=/etc/soketi-config.json"]
+  webhook:
+    build: .
+  auth:
+    build: .

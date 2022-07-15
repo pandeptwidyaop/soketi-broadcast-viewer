@@ -3,6 +3,7 @@ package main
 import (
 	"io"
 	"net/http"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -11,10 +12,12 @@ import (
 func TestPostAuth(t *testing.T) {
 	app := InitFiber()
 
+	msg := `{"data":"true"}`
+
 	req, _ := http.NewRequest(
 		"POST",
 		"/auth",
-		nil,
+		strings.NewReader(msg),
 	)
 
 	res, err := app.Test(req)

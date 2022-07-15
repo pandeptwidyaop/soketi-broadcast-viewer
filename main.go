@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/pusher/pusher-http-go"
 )
 
@@ -22,6 +23,7 @@ type PusherWebhook struct {
 
 func InitFiber() *fiber.App {
 	app := fiber.New()
+	app.Use(cors.New())
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("OK")
@@ -41,13 +43,17 @@ func InitFiber() *fiber.App {
 		AppID:  "app",
 		Key:    "app",
 		Secret: "app",
-		Host:   "ws-rnd.btwazure.com",
+		Host:   "ws-rnd-btw.iziedev.com",
 		Secure: true,
 	}
 
 	app.Post("/auth", func(c *fiber.Ctx) error {
-		client.AuthenticatePrivateChannel(c.Body())
-		return nil
+		fmt.Println(string(c.Body()))
+		res, err := client.AuthenticatePrivateChannel(c.Body())
+		if err != nil {
+			return err
+		}
+		return c.Send(res)
 	})
 
 	return app
