@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/pusher/pusher-http-go"
 )
 
 type WebhookEvent struct {
@@ -19,7 +20,7 @@ type PusherWebhook struct {
 	Events []WebhookEvent `json:"events"`
 }
 
-func main() {
+func InitFiber() *fiber.App {
 	app := fiber.New()
 
 	app.Get("/", func(c *fiber.Ctx) error {
@@ -36,5 +37,23 @@ func main() {
 		return c.SendString("OK")
 	})
 
+	var client = pusher.Client{
+		AppID:  "app",
+		Key:    "app",
+		Secret: "app",
+		Host:   "ws-rnd.btwazure.com",
+		Secure: true,
+	}
+
+	app.Post("/auth", func(c *fiber.Ctx) error {
+		client.AuthenticatePrivateChannel(c.Body())
+		return nil
+	})
+
+	return app
+}
+
+func main() {
+	app := InitFiber()
 	log.Fatal(app.Listen(":8000"))
 }
